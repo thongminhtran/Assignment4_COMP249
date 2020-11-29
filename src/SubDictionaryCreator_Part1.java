@@ -2,10 +2,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SubDictionaryCreator {
+public class SubDictionaryCreator_Part1 {
     public static String[] punctuations = {"?", ".", ",", ":", "=", "!", ";"};
     public static String[] digits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    //    public static String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     public static Character[] alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
     public static void main(String[] args) {
@@ -13,11 +12,20 @@ public class SubDictionaryCreator {
         // Read File by Scanner
         displayWelcomeMessage();
         String content = readFileByScanner();
-        String[] parsedLines = content.split("\n");
+        ArrayList<String> inputData = copyDataToList(content);
+        transferToUpperCase(inputData);
+        removeDuplicateWords(inputData);
+        ArrayList<String> sortedList = sortAlphabetOrder(inputData);
+        writeToSubDictionary(sortedList);
 
-        String[] words;
-        // Create an array with all signs that appear the end of word.
+    }
+
+
+    // This method will go through the String content, analyze and take every single word to the ArrayList
+    public static ArrayList<String> copyDataToList(String content) {
         ArrayList<String> inputData = new ArrayList<String>();
+        String[] parsedLines = content.split("\n");
+        String words[];
         for (int i = 0; i < parsedLines.length; i++) {
             words = parsedLines[i].split(" ");
             for (int j = 0; j < words.length; j++) {
@@ -28,6 +36,11 @@ public class SubDictionaryCreator {
                 }
                 // Replace all single quote in any words.
                 if (containsSingleQuote(words[j])) {
+                    // Replace all Single Quote from any words
+                    words[j] = words[j].replace("'m", "");
+                    words[j] = words[j].replace("'s", "");
+                    words[j] = words[j].replace("'M", "");
+                    words[j] = words[j].replace("'S", "");
                     words[j] = words[j].replace("'", "");
                 }
 
@@ -36,34 +49,22 @@ public class SubDictionaryCreator {
                     continue;
 
                 if (words[j].length() == 1) {
-                    if (containsOnlyOneLetterAOrI(words[j])) {
-                        words[j].replaceAll("\\s+", "");     //Remove all spaces in any words.
-                        inputData.add(words[j]);
-                    } else {
+                    // Ignore any single words if it is not A or I
+                    if (!containsOnlyOneLetterAOrI(words[j])) {
                         continue;
                     }
-                } else {
-                    words[j].replaceAll("\\s+", "");     //Remove all spaces in any words.
-                    inputData.add(words[j]);
                 }
+                words[j].replaceAll("\\s+", "");     //Remove all spaces in any words.
+                inputData.add(words[j]);
             }
         }
-        transferToUpperCase(inputData);
-        removeDuplicateWords(inputData);
-        ArrayList<String> sortedList = sortAlphabetOrder(inputData);
-
-        //Remove any Empty Elements After Sorted.
-        for (int i = 0; i < sortedList.size(); i++) {
-            if (sortedList.get(i) == "")
-                sortedList.remove(i);
-        }
-        writeToSubDictionary(sortedList);
+        return inputData;
     }
 
     public static void writeToSubDictionary(ArrayList<String> stringArrayList) {
         // Create a new file.
         try {
-            File file = new File("outputPart1.txt");
+            File file = new File("SubDictionaryPart1.txt");
             if (file.createNewFile()) {
                 System.out.println("File created: " + file.getName());
             } else {
@@ -74,7 +75,7 @@ public class SubDictionaryCreator {
             e.printStackTrace();
         }
         try {
-            FileWriter writer = new FileWriter("outputPart1.txt");
+            FileWriter writer = new FileWriter("SubDictionaryPart1.txt");
             writer.write("The document produced this sub-dictionary, which includes " + stringArrayList.size() + " entries." + "\n\n");
             for (int i = 0; i < alphabet.length; i++) {
                 writer.write(alphabet[i] + "\n");
@@ -93,8 +94,6 @@ public class SubDictionaryCreator {
             System.out.println("Cannot find any files to write!");
             System.exit(0);
         }
-
-
     }
 
     public static void transferToUpperCase(ArrayList<String> stringArrayList) {
@@ -104,24 +103,6 @@ public class SubDictionaryCreator {
             stringArrayList.remove(i);
             stringArrayList.add(i, temp.toUpperCase());
         }
-    }
-
-    public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
-        ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
-        for (int i = 0; i < tempArrayList.size(); i++) {
-            for (int j = i + 1; j < tempArrayList.size(); j++) {
-
-                //Compare all words, switch them with each other if necessary.
-                if (tempArrayList.get(i).compareToIgnoreCase(tempArrayList.get(j)) > 0) {
-                    String temp = tempArrayList.get(j);
-                    tempArrayList.remove(j);
-                    tempArrayList.add(j, tempArrayList.get(i));
-                    tempArrayList.remove(i);
-                    tempArrayList.add(i, temp);
-                }
-            }
-        }
-        return tempArrayList;
     }
 
     public static void removeDuplicateWords(ArrayList<String> stringArrayList) {
@@ -161,6 +142,7 @@ public class SubDictionaryCreator {
         return false;
     }
 
+
     public static boolean containsPunctuation(String word) {
         for (String punctuation : punctuations) {
             if (word.contains(punctuation)) {
@@ -169,6 +151,28 @@ public class SubDictionaryCreator {
 
         }
         return false;
+    }
+
+    public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
+        ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
+        for (int i = 0; i < tempArrayList.size(); i++) {
+            for (int j = i + 1; j < tempArrayList.size(); j++) {
+                //Compare all words, switch them with each other if necessary.
+                if (tempArrayList.get(i).compareToIgnoreCase(tempArrayList.get(j)) > 0) {
+                    String temp = tempArrayList.get(j);
+                    tempArrayList.remove(j);
+                    tempArrayList.add(j, tempArrayList.get(i));
+                    tempArrayList.remove(i);
+                    tempArrayList.add(i, temp);
+                }
+            }
+        }
+        for (int a = 0; a < tempArrayList.size(); a++) {
+            // Remove all empty string
+            if (tempArrayList.get(a) == "")
+                tempArrayList.remove(a);
+        }
+        return tempArrayList;
     }
 
     public static String readFileByScanner() {
