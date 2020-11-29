@@ -58,6 +58,9 @@ public class CellListUtilization {
         testReplaceAtIndex(cellList1, tempCellPhone, 3);
         testEqualsFunction(cellList1, cellList2);
 
+        CellList cellList3 = new CellList(cellList1);
+        testEqualsFunction(cellList1, cellList3);
+
     }
 
     public static void displayWelcomeMessage() {
