@@ -2,6 +2,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Names and ID: Thong Minh Tran (40072745)
+ * Quan Nguyen The(40108890)
+ * COMP249
+ * Assignment #4 Part 2
+ * Deadline: Dec 4 2020
+ */
+
+/**
+ * This is a Main class for part 2
+ */
 public class CellListUtilization {
 
     public static void main(String[] args) {
@@ -55,7 +66,7 @@ public class CellListUtilization {
         // Test findItem() method
         findItemBySerialNum(serialNumByUser, cellList1);
         CellPhone tempCellPhone = new CellPhone(123444, "Sony Xperia 10", 2010, 300);
-        testReplaceAtIndex(cellList1, tempCellPhone, 3);
+        testReplaceAtIndex(cellList1);
         testEqualsFunction(cellList1, cellList2);
 
         CellList cellList3 = new CellList(cellList1);
@@ -63,13 +74,23 @@ public class CellListUtilization {
 
     }
 
+
+    /**
+     * This method is going to display a welcome message
+     */
     public static void displayWelcomeMessage() {
         System.out.println("------Welcome to Thong Tran's Cell List Utilization program------");
         System.out.println();
     }
 
+    /**
+     * Create a temporary node to store the found item if exists.
+     *
+     * @param serialNum
+     * @param cellList
+     */
     public static void findItemBySerialNum(long serialNum, CellList cellList) {
-        // Create a temporary node to store the found item if exists.
+
         CellList.CellNode tempNode = null;
         System.out.println("=======This section is used for Find Item By Serial# Test========");
         if (!cellList.contains(serialNum)) {
@@ -83,6 +104,12 @@ public class CellListUtilization {
     }
 
 
+    /**
+     * This method showing the content of cellphone list
+     *
+     * @param cellList
+     * @param listName
+     */
     public static void showContent(CellList cellList, String listName) {
         System.out.println("--------Displaying content of Cellphone Lists-------");
         System.out.println("Show content of " + listName + ": ");
@@ -90,6 +117,12 @@ public class CellListUtilization {
         System.out.println();
     }
 
+    /**
+     * This method is testing equals function of cell list class
+     *
+     * @param cellList1
+     * @param cellList2
+     */
     public static void testEqualsFunction(CellList cellList1, CellList cellList2) {
         System.out.println("============Testing Equals Function of CellList class==========");
         System.out.println();
@@ -101,16 +134,36 @@ public class CellListUtilization {
         System.out.println("Equals Test Completed.");
     }
 
-    public static void testReplaceAtIndex(CellList cellList, CellPhone cellPhone, int index) {
+    /**
+     * This method is testing equals function of cell list class
+     *
+     * @param cellList
+     */
+    public static void testReplaceAtIndex(CellList cellList) {
         System.out.println("========Here is Replace At Index test=======");
-        System.out.println("Replacing index " + index + " with item: " + cellPhone.toString() + " to the list.");
-        cellList.replaceAtIndex(cellPhone, index);
+        System.out.println("Please enter the following information of item to replace: ");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter serial number: ");
+        long serialNum = sc.nextLong();
+        System.out.println("Enter brand: ");
+        String brand = sc.next();
+        System.out.println("Enter release year: ");
+        int year = sc.nextInt();
+        System.out.println("Enter price: ");
+        double price = sc.nextDouble();
+
+        // Store those value into cellphone
+        CellPhone enteredCellPhone = new CellPhone(serialNum, brand, year, price);
+
+        System.out.println("What position would you like to replace: ");
+        int position = sc.nextInt();
+        System.out.println("Replacing position " + position + " with item: " + enteredCellPhone.toString() + " to the list.");
+
+        // Call replaceAtIndex method with index = position - 1;
+        cellList.replaceAtIndex(enteredCellPhone, position - 1);
         cellList.showContents();
-        System.out.println("Replace At Index Test Completed.");
+        System.out.println("Replace At Position Test Completed.");
         System.out.println();
     }
 
-
 }
-
-

@@ -1,4 +1,4 @@
-The document produced this sub-dictionary, which includes 451 entries.
+The document produced this sub-dictionary, which includes 447 entries.
 
 A
 ==
@@ -120,7 +120,6 @@ EARLY
 EDUCATION
 EIGHTEEN
 EINSTEIN
-EINSTEIN’S
 ELECTRIFYING
 ELEMENTARY
 ELSE
@@ -224,8 +223,6 @@ IS
 ISAAC
 IT
 ITS
-IT’S
-I’M
 
 J
 ==
@@ -388,7 +385,6 @@ SAFE
 SAID
 SAME
 SCHOOL
-SCHOOL’S
 SCIENCE
 SCIENCES
 SCIENTIST

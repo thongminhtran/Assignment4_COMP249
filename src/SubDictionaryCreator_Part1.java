@@ -1,7 +1,23 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Names and ID: Thong Minh Tran (40072745)
+ * Quan Nguyen The(40108890)
+ * COMP249
+ * Assignment #4 Part 1
+ * Deadline: Dec 4 2020
+ */
+
+/**
+ * This is a driver class for Part 1
+ * Part 1 will only include this class.
+ * Introduction: This program will read a file, then generate a file named "SubDictionary.txt".
+ */
 public class SubDictionaryCreator_Part1 {
     public static String[] punctuations = {"?", ".", ",", ":", "=", "!", ";"};
     public static String[] digits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -21,7 +37,12 @@ public class SubDictionaryCreator_Part1 {
     }
 
 
-    // This method will go through the String content, analyze and take every single word to the ArrayList
+    /**
+     * This method will go through the String content, analyze and take every single word to the ArrayList
+     *
+     * @param content
+     * @return
+     */
     public static ArrayList<String> copyDataToList(String content) {
         ArrayList<String> inputData = new ArrayList<String>();
         String[] parsedLines = content.split("\n");
@@ -61,10 +82,16 @@ public class SubDictionaryCreator_Part1 {
         return inputData;
     }
 
+
+    /**
+     * This method is for creating a new file
+     *
+     * @param stringArrayList
+     */
     public static void writeToSubDictionary(ArrayList<String> stringArrayList) {
-        // Create a new file.
+
         try {
-            File file = new File("SubDictionaryPart1.txt");
+            File file = new File("SubDictionary.txt");
             if (file.createNewFile()) {
                 System.out.println("File created: " + file.getName());
             } else {
@@ -75,7 +102,7 @@ public class SubDictionaryCreator_Part1 {
             e.printStackTrace();
         }
         try {
-            FileWriter writer = new FileWriter("SubDictionaryPart1.txt");
+            FileWriter writer = new FileWriter("SubDictionary.txt");
             writer.write("The document produced this sub-dictionary, which includes " + stringArrayList.size() + " entries." + "\n\n");
             for (int i = 0; i < alphabet.length; i++) {
                 writer.write(alphabet[i] + "\n");
@@ -96,6 +123,12 @@ public class SubDictionaryCreator_Part1 {
         }
     }
 
+
+    /**
+     * This method will capitalize each words are found in the text.
+     *
+     * @param stringArrayList
+     */
     public static void transferToUpperCase(ArrayList<String> stringArrayList) {
         for (int i = 0; i < stringArrayList.size(); i++) {
             // Upper case all words in the list.
@@ -105,6 +138,12 @@ public class SubDictionaryCreator_Part1 {
         }
     }
 
+
+    /**
+     * This method going to remove all repeating words.
+     *
+     * @param stringArrayList
+     */
     public static void removeDuplicateWords(ArrayList<String> stringArrayList) {
         for (int i = 0; i < stringArrayList.size(); i++) {
             // Remove all duplicate words.
@@ -116,11 +155,19 @@ public class SubDictionaryCreator_Part1 {
     }
 
 
+    /**
+     * This method is going to display a welcome message
+     */
     public static void displayWelcomeMessage() {
         System.out.println("Welcome to Sub-Dictionary Creator");
     }
 
-    // This method will return true if there exists a number in a word.
+
+    /**
+     * This method will return true if there exists a number in a word.
+     *
+     * @param word
+     */
     public static boolean containsDigit(String word) {
         for (String digit : digits) {
             if (word.contains(digit))
@@ -129,6 +176,14 @@ public class SubDictionaryCreator_Part1 {
         return false;
     }
 
+
+    /**
+     * This method will allow with the exception of A and I, can be recorded in the dictionary. (as specified in the assignment)
+     *
+     * @param word
+     * @return
+     */
+
     public static boolean containsOnlyOneLetterAOrI(String word) {
         if (word.charAt(0) == 'A' || word.charAt(0) == 'a' || word.charAt(0) == 'I' || word.charAt(0) == 'i')
             return true;
@@ -136,13 +191,24 @@ public class SubDictionaryCreator_Part1 {
     }
 
 
+    /**
+     * This method checks if it contains single quote
+     *
+     * @param word
+     * @return
+     */
     public static boolean containsSingleQuote(String word) {
         if (word.contains("'"))
             return true;
         return false;
     }
 
-
+    /**
+     * This method checks if it contains punctuation
+     *
+     * @param word
+     * @return
+     */
     public static boolean containsPunctuation(String word) {
         for (String punctuation : punctuations) {
             if (word.contains(punctuation)) {
@@ -153,6 +219,13 @@ public class SubDictionaryCreator_Part1 {
         return false;
     }
 
+
+    /**
+     * This method creates an array list and sort for alphabetical order.
+     *
+     * @param stringArrayList
+     * @return
+     */
     public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
         ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
         for (int i = 0; i < tempArrayList.size(); i++) {
@@ -175,6 +248,12 @@ public class SubDictionaryCreator_Part1 {
         return tempArrayList;
     }
 
+
+    /**
+     * This method will read the file
+     *
+     * @return
+     */
     public static String readFileByScanner() {
         String data = "";
         try {
@@ -195,4 +274,3 @@ public class SubDictionaryCreator_Part1 {
         return data;
     }
 }
-
