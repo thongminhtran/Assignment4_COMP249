@@ -52,7 +52,8 @@ public class CellListUtilization {
             }
         }
 
-        displayWelcomeMessage();
+        System.out.println("------Welcome to Thong Tran's Cell List Utilization program------");
+        System.out.println();
 
         showContent(cellList1, "List 1 (Unique List)");
         showContent(cellList2, "List 2 (Duplicate List)");
@@ -63,24 +64,17 @@ public class CellListUtilization {
         Scanner sc = new Scanner(System.in);
         long serialNumByUser = sc.nextLong();
 
-        // Test findItem() method
-        findItemBySerialNum(serialNumByUser, cellList1);
-        CellPhone tempCellPhone = new CellPhone(123444, "Sony Xperia 10", 2010, 300);
-        testReplaceAtIndex(cellList1);
-        testEqualsFunction(cellList1, cellList2);
+//        findItemBySerialNum(serialNumByUser, cellList1);
+//        testReplaceAtIndex(cellList1);
+//        testEqualsFunction(cellList1, cellList2);
 
         CellList cellList3 = new CellList(cellList1);
+        cellList1.reverse();
+        cellList3.showContents();
+        System.out.println("*************************************");
+        cellList1.showContents();
         testEqualsFunction(cellList1, cellList3);
 
-    }
-
-
-    /**
-     * This method is going to display a welcome message
-     */
-    public static void displayWelcomeMessage() {
-        System.out.println("------Welcome to Thong Tran's Cell List Utilization program------");
-        System.out.println();
     }
 
     /**

@@ -27,24 +27,46 @@ public class CellList {
         this.head = null;
         this.size = 0;
     }
-
-
-    //TODO
-
     /**
      * Copy constructor, which accepts a CellList object and creates a copy of it
      *
      * @param cellList
      */
     public CellList(CellList cellList) {
-        CellNode currentNode = cellList.head;
-        while (currentNode != null) {
-            addToStart(currentNode.cellPhone);
-            currentNode = currentNode.next;
-            size = size + 1;
+
+        cellList.reverse();
+        CellNode position = cellList.head;
+        while(position!=null){
+            addToStart(position.cellPhone);
+            position = position.next;
+            size++;
         }
+
+
+    }
+    public void reverse()
+    {
+        CellNode previous = null;
+        CellNode current = head;
+        CellNode next;
+        while (current != null) {
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }
+        head = previous;
     }
 
+//    public void add(CellPhone cellPhone) {
+//        CellNode temp = new CellNode(cellPhone);
+//        CellNode current = head;
+//        while(current.next!=null){
+//            current = current.next;
+//        }
+//        current.setNext(temp);
+//        size++;
+//    }
 
     /**
      * This method creates a node with that passed object and inserts this node at the head of the list;
@@ -55,10 +77,6 @@ public class CellList {
         head = new CellNode(cellPhone, head);
         size = size + 1;
     }
-
-    //insertAtIndex() method
-
-    //deleteFromIndex() method
 
     /**
      * The method check if the index is not valid,
@@ -185,38 +203,21 @@ public class CellList {
     /**
      * a method called equals(), accepts one parameter of type CellList.
      */
-    //TODO: test if this function works correctly
-    public boolean equals(Object newObject) {
-
-        // If two objects are same, return true
-        if (this == newObject) {
-            return true;
-        }
-        //
-        if (newObject == null || getClass() != newObject.getClass()) {
+    public boolean equals(CellList cellList) {
+        if (cellList == null || cellList.size == 0) {
             return false;
-        } else {
-            boolean isEqual = true;
-            CellList tempList = (CellList) newObject;
-            CellNode currentNode = head;
-            CellNode tempNode = tempList.head;
-
-            if (tempList.size != this.size)
-                return false;
-            else {
-                while (currentNode != null) {
-                    if (!currentNode.cellPhone.equals(tempNode.cellPhone)) {
-
-                        // If they are not equals in some situation, return false and break
-                        isEqual = false;
-                        break;
-                    }
-                    currentNode = currentNode.next;
-                    tempNode = tempNode.next;
-                }
-            }
-            return isEqual;
         }
+        if (this.size != cellList.size) return false;
+        CellNode thisCurrentNode = head;
+        CellNode comparingCurrentNode = cellList.head;
+        while(thisCurrentNode != null && comparingCurrentNode != null) {
+            if (!thisCurrentNode.getCellPhone().equals(comparingCurrentNode.getCellPhone())) {
+                return false;
+            }
+            thisCurrentNode = thisCurrentNode.getNext();
+            comparingCurrentNode = comparingCurrentNode.getNext();
+        }
+        return true;
     }
 
     /**
