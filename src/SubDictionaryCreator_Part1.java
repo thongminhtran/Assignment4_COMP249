@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -24,16 +25,18 @@ public class SubDictionaryCreator_Part1 {
     public static Character[] alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
     public static void main(String[] args) {
-        // write your code here
-        // Read File by Scanner
-        displayWelcomeMessage();
-        String content = readFileByScanner();
+        System.out.println("Welcome to Sub-Dictionary Creator");
+        String content;
+        try{
+            content = readFileByScanner();
+        }catch(FileNotFoundException exception) {
+            exception.printStackTrace();
+            System.out.println("Cannot find any files to read.");
+            return; // exit
+        }
         ArrayList<String> inputData = copyDataToList(content);
-        transferToUpperCase(inputData);
-        removeDuplicateWords(inputData);
-        ArrayList<String> sortedList = sortAlphabetOrder(inputData);
-        writeToSubDictionary(sortedList);
-
+        Collections.sort(inputData);
+        writeToSubDictionary(inputData);
     }
 
 
@@ -75,8 +78,10 @@ public class SubDictionaryCreator_Part1 {
                         continue;
                     }
                 }
-                words[j].replaceAll("\\s+", "");     //Remove all spaces in any words.
-                inputData.add(words[j]);
+                words[j].replaceAll("\\s+", "").trim();     //Remove all spaces in any words.
+                if (!inputData.contains(words[j].toUpperCase())) {
+                    inputData.add(words[j].toUpperCase());
+                }
             }
         }
         return inputData;
@@ -108,8 +113,10 @@ public class SubDictionaryCreator_Part1 {
                 writer.write(alphabet[i] + "\n");
                 writer.write("==" + "\n");
                 for (String word : stringArrayList) {
-                    if (word.charAt(0) == alphabet[i]) {
-                        writer.write(word + "\n");
+                    if (!word.isEmpty()) {
+                        if (word.charAt(0) == alphabet[i]) {
+                            writer.write(word + "\n");
+                        }
                     }
                 }
                 writer.write("\n");
@@ -121,45 +128,6 @@ public class SubDictionaryCreator_Part1 {
             System.out.println("Cannot find any files to write!");
             System.exit(0);
         }
-    }
-
-
-    /**
-     * This method will capitalize each words are found in the text.
-     *
-     * @param stringArrayList
-     */
-    public static void transferToUpperCase(ArrayList<String> stringArrayList) {
-        for (int i = 0; i < stringArrayList.size(); i++) {
-            // Upper case all words in the list.
-            String temp = stringArrayList.get(i);
-            stringArrayList.remove(i);
-            stringArrayList.add(i, temp.toUpperCase());
-        }
-    }
-
-
-    /**
-     * This method going to remove all repeating words.
-     *
-     * @param stringArrayList
-     */
-    public static void removeDuplicateWords(ArrayList<String> stringArrayList) {
-        for (int i = 0; i < stringArrayList.size(); i++) {
-            // Remove all duplicate words.
-            for (int j = i + 1; j < stringArrayList.size(); j++) {
-                if (stringArrayList.get(i).compareToIgnoreCase(stringArrayList.get(j)) == 0)
-                    stringArrayList.remove(j);
-            }
-        }
-    }
-
-
-    /**
-     * This method is going to display a welcome message
-     */
-    public static void displayWelcomeMessage() {
-        System.out.println("Welcome to Sub-Dictionary Creator");
     }
 
 
@@ -219,58 +187,23 @@ public class SubDictionaryCreator_Part1 {
         return false;
     }
 
-
     /**
-     * This method creates an array list and sort for alphabetical order.
-     *
-     * @param stringArrayList
+     *  This method will read the file
      * @return
+     * @throws FileNotFoundException
      */
-    public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
-        ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
-        for (int i = 0; i < tempArrayList.size(); i++) {
-            for (int j = i + 1; j < tempArrayList.size(); j++) {
-                //Compare all words, switch them with each other if necessary.
-                if (tempArrayList.get(i).compareToIgnoreCase(tempArrayList.get(j)) > 0) {
-                    String temp = tempArrayList.get(j);
-                    tempArrayList.remove(j);
-                    tempArrayList.add(j, tempArrayList.get(i));
-                    tempArrayList.remove(i);
-                    tempArrayList.add(i, temp);
-                }
-            }
-        }
-        for (int a = 0; a < tempArrayList.size(); a++) {
-            // Remove all empty string
-            if (tempArrayList.get(a) == "")
-                tempArrayList.remove(a);
-        }
-        return tempArrayList;
-    }
-
-
-    /**
-     * This method will read the file
-     *
-     * @return
-     */
-    public static String readFileByScanner() {
+    public static String readFileByScanner() throws FileNotFoundException {
         String data = "";
-        try {
-            System.out.print("Enter the file name with path: ");
-            Scanner input = new Scanner(System.in);
-            File file = new File(input.nextLine());
-            input = new Scanner(file);
-            while (input.hasNextLine()) {
-                data += input.nextLine();
-                data += "\n";
-            }
-            input.close();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            System.out.println("Cannot find any files to read.");
-            System.exit(0);
+        System.out.print("Enter the file name with path: ");
+        Scanner input = new Scanner(System.in);
+        File file = new File(input.nextLine());
+        input = new Scanner(file);
+        while (input.hasNextLine()) {
+            data += input.nextLine();
+            data += "\n";
         }
+        input.close();
+
         return data;
     }
 }
