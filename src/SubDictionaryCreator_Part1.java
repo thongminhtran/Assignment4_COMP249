@@ -25,45 +25,10 @@ public class SubDictionaryCreator_Part1 {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Sub-Dictionary Creator");
-        String content;
-        try {
-            content = readFileByScanner();
-        } catch (FileNotFoundException exception) {
-            exception.printStackTrace();
-            System.out.println("Cannot find any files to read.");
-            return; // exit
-        }
+        String content = readFileByScanner();
         ArrayList<String> inputData = copyDataToList(content);
         ArrayList<String> sortedData = sortAlphabetOrder(inputData);
         writeToSubDictionary(sortedData);
-    }
-
-    /**
-     * This method creates an array list and sort for alphabetical order.
-     *
-     * @param stringArrayList
-     * @return
-     */
-    public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
-        ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
-        for (int i = 0; i < tempArrayList.size(); i++) {
-            for (int j = i + 1; j < tempArrayList.size(); j++) {
-                //Compare all words, switch them with each other if necessary.
-                if (tempArrayList.get(i).compareToIgnoreCase(tempArrayList.get(j)) > 0) {
-                    String temp = tempArrayList.get(j);
-                    tempArrayList.remove(j);
-                    tempArrayList.add(j, tempArrayList.get(i));
-                    tempArrayList.remove(i);
-                    tempArrayList.add(i, temp);
-                }
-            }
-        }
-        for (int a = 0; a < tempArrayList.size(); a++) {
-            // Remove all empty string
-            if (tempArrayList.get(a) == "")
-                tempArrayList.remove(a);
-        }
-        return tempArrayList;
     }
 
 
@@ -220,18 +185,52 @@ public class SubDictionaryCreator_Part1 {
      * @return
      * @throws FileNotFoundException
      */
-    public static String readFileByScanner() throws FileNotFoundException {
+    public static String readFileByScanner() {
         String data = "";
-        System.out.print("Enter the file name with path: ");
-        Scanner input = new Scanner(System.in);
-        File file = new File(input.nextLine());
-        input = new Scanner(file);
-        while (input.hasNextLine()) {
-            data += input.nextLine();
-            data += "\n";
+        try {
+            System.out.print("Enter the file name with path: ");
+            Scanner input = new Scanner(System.in);
+            File file = new File(input.nextLine());
+            input = new Scanner(file);
+            while (input.hasNextLine()) {
+                data += input.nextLine();
+                data += "\n";
+            }
+            input.close();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            System.out.println("Cannot find any files to read.");
+            System.exit(0);
         }
-        input.close();
-
         return data;
     }
+
+    /**
+     * This method creates an array list and sort for alphabetical order.
+     *
+     * @param stringArrayList
+     * @return
+     */
+    public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
+        ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
+        for (int i = 0; i < tempArrayList.size(); i++) {
+            for (int j = i + 1; j < tempArrayList.size(); j++) {
+                //Compare all words, switch them with each other if necessary.
+                if (tempArrayList.get(i).compareToIgnoreCase(tempArrayList.get(j)) > 0) {
+                    String temp = tempArrayList.get(j);
+                    tempArrayList.remove(j);
+                    tempArrayList.add(j, tempArrayList.get(i));
+                    tempArrayList.remove(i);
+                    tempArrayList.add(i, temp);
+                }
+            }
+        }
+        for (int a = 0; a < tempArrayList.size(); a++) {
+            // Remove all empty string
+            if (tempArrayList.get(a) == "")
+                tempArrayList.remove(a);
+        }
+        return tempArrayList;
+    }
+
 }
