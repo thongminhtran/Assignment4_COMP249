@@ -27,6 +27,7 @@ public class CellList {
         this.head = null;
         this.size = 0;
     }
+
     /**
      * Copy constructor, which accepts a CellList object and creates a copy of it
      *
@@ -34,18 +35,23 @@ public class CellList {
      */
     public CellList(CellList cellList) {
 
-        cellList.reverse();
         CellNode position = cellList.head;
-        while(position!=null){
+        while (position != null) {
             addToStart(position.cellPhone);
             position = position.next;
             size++;
         }
-
+        // The algorithm above will return a list with reversed order, so I reverse back.
+        this.reverse();
 
     }
-    public void reverse()
-    {
+
+    /**
+     * This method will reverse the order of a list
+     * Source of this code: https://stackoverflow.com/questions/22605050/reverse-singly-linked-list-java
+     */
+
+    public void reverse() {
         CellNode previous = null;
         CellNode current = head;
         CellNode next;
@@ -58,15 +64,6 @@ public class CellList {
         head = previous;
     }
 
-//    public void add(CellPhone cellPhone) {
-//        CellNode temp = new CellNode(cellPhone);
-//        CellNode current = head;
-//        while(current.next!=null){
-//            current = current.next;
-//        }
-//        current.setNext(temp);
-//        size++;
-//    }
 
     /**
      * This method creates a node with that passed object and inserts this node at the head of the list;
@@ -207,10 +204,9 @@ public class CellList {
         if (cellList == null || cellList.size == 0) {
             return false;
         }
-        if (this.size != cellList.size) return false;
         CellNode thisCurrentNode = head;
         CellNode comparingCurrentNode = cellList.head;
-        while(thisCurrentNode != null && comparingCurrentNode != null) {
+        while (thisCurrentNode != null && comparingCurrentNode != null) {
             if (!thisCurrentNode.getCellPhone().equals(comparingCurrentNode.getCellPhone())) {
                 return false;
             }

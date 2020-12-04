@@ -27,16 +27,44 @@ public class SubDictionaryCreator_Part1 {
     public static void main(String[] args) {
         System.out.println("Welcome to Sub-Dictionary Creator");
         String content;
-        try{
+        try {
             content = readFileByScanner();
-        }catch(FileNotFoundException exception) {
+        } catch (FileNotFoundException exception) {
             exception.printStackTrace();
             System.out.println("Cannot find any files to read.");
             return; // exit
         }
         ArrayList<String> inputData = copyDataToList(content);
-        Collections.sort(inputData);
-        writeToSubDictionary(inputData);
+        ArrayList<String> sortedData = sortAlphabetOrder(inputData);
+        writeToSubDictionary(sortedData);
+    }
+
+    /**
+     * This method creates an array list and sort for alphabetical order.
+     *
+     * @param stringArrayList
+     * @return
+     */
+    public static ArrayList<String> sortAlphabetOrder(ArrayList<String> stringArrayList) {
+        ArrayList<String> tempArrayList = (ArrayList<String>) stringArrayList.clone();
+        for (int i = 0; i < tempArrayList.size(); i++) {
+            for (int j = i + 1; j < tempArrayList.size(); j++) {
+                //Compare all words, switch them with each other if necessary.
+                if (tempArrayList.get(i).compareToIgnoreCase(tempArrayList.get(j)) > 0) {
+                    String temp = tempArrayList.get(j);
+                    tempArrayList.remove(j);
+                    tempArrayList.add(j, tempArrayList.get(i));
+                    tempArrayList.remove(i);
+                    tempArrayList.add(i, temp);
+                }
+            }
+        }
+        for (int a = 0; a < tempArrayList.size(); a++) {
+            // Remove all empty string
+            if (tempArrayList.get(a) == "")
+                tempArrayList.remove(a);
+        }
+        return tempArrayList;
     }
 
 
@@ -188,7 +216,8 @@ public class SubDictionaryCreator_Part1 {
     }
 
     /**
-     *  This method will read the file
+     * This method will read the file
+     *
      * @return
      * @throws FileNotFoundException
      */

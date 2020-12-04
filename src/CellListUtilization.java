@@ -64,16 +64,19 @@ public class CellListUtilization {
         Scanner sc = new Scanner(System.in);
         long serialNumByUser = sc.nextLong();
 
-//        findItemBySerialNum(serialNumByUser, cellList1);
-//        testReplaceAtIndex(cellList1);
-//        testEqualsFunction(cellList1, cellList2);
+        // Following called methods are used for testing
+        findItemBySerialNum(serialNumByUser, cellList1);
+        testReplaceAtIndex(cellList1);
+        testEqualsFunction(cellList1, cellList2);
 
         CellList cellList3 = new CellList(cellList1);
-        cellList1.reverse();
+        System.out.println("==========This is the content of CellList 3============");
         cellList3.showContents();
         System.out.println("*************************************");
+        System.out.println("==========This is the content of CellList 1============");
         cellList1.showContents();
         testEqualsFunction(cellList1, cellList3);
+        testEqualsFunction(cellList1, cellList2);
 
     }
 
